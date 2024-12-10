@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd  # 添加 pandas 导入
 
 def get_motorola_models():
     url = "https://www.gsmarena.com/motorola-phones-4.php"
@@ -24,12 +25,21 @@ def get_motorola_models():
 def main():
     motorola_models = get_motorola_models()
     if motorola_models:
-        print("List of Motorola:")
+        # 创建数据框
+        df = pd.DataFrame(motorola_models, columns=['Model Name', 'Link'])
+        
+        # 保存到 Excel 文件
+        excel_file = 'motorola_phones.xlsx'
+        df.to_excel(excel_file, index=False)
+        print(f"数据已保存到 {excel_file}")
+        
+        # 打印确认信息
+        print("\n手机型号列表：")
         for i, (name, link) in enumerate(motorola_models, 1):
             print("{}. {}".format(i, name))
-            print("   Link: {}".format(link))
+            print("   链接: {}".format(link))
     else:
-        print("Can't find Motorola Phonepy")
+        print("未找到摩托罗拉手机数据")
 
 if __name__ == "__main__":
-    main() 
+    main()
